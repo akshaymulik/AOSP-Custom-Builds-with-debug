@@ -35,8 +35,6 @@ make: *** [ninja_wrapper] Error 1
 Solution: add this lines to file: https://android.googlesource.com/platform/frameworks/base/+/master/core/res/res/values/config.xml
 
 
-<add-resource type="bool" name="config_intrusiveBatteryLed"></add-resource>
-
 <!-- Hardware keys present on the device, stored as a bit field.
          This integer should equal the sum of the corresponding value for each
          of the following keys present:
@@ -50,6 +48,10 @@ Solution: add this lines to file: https://android.googlesource.com/platform/fram
          For example, a device with Home, Back and Menu keys would set this
          config to 7. -->
     <integer name="config_deviceHardwareKeys">79</integer>
+    
+<add-resource type="bool" name="config_intrusiveBatteryLed"></add-resource>
+<add-resource type="bool" name="config_ui_blur_enabled"></add-resource>
+
 
     <!-- Hardware keys present on the device with the ability to wake, stored as a bit field.
          This integer should equal the sum of the corresponding value for each
@@ -65,5 +67,11 @@ Solution: add this lines to file: https://android.googlesource.com/platform/fram
          config to 7. -->
     <integer name="config_deviceHardwareWakeKeys">79</integer>
 
-<add-resource type="bool" name="config_ui_blur_enabled"></add-resource>
+
+
+
+3. $ ~/AOSP/prebuilts/misc/linux-x86/ccache/ccache -M 50G
+error:Could not set cache size limit.
+solution: $ sudo ~/AOSP/prebuilts/misc/linux-x86/ccache/ccache -M 50G
+Set cache size limit to 50.0 Gbytes
 
