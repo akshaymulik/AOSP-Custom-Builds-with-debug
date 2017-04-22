@@ -86,19 +86,27 @@ ninja: build stopped: subcommand failed.
 build/core/ninja.mk:148: recipe for target 'ninja_wrapper' failed
 make: *** [ninja_wrapper] Error 1
 
+
 Solution:
 Under system/sepolicy
 1. file:attributes
 add-line:
+```
  + #Domain type used for debugfs access by QCOM
  + attribute qti_debugfs_domain;
- 
+```
+
 2. create file: qti-testscripts.te
-add-line: + userdebug_or_eng('type qti-testscripts, domain, domain_deprecated, mlstrustedsubject;')
+add-line:
+```
++ userdebug_or_eng('type qti-testscripts, domain, domain_deprecated, mlstrustedsubject;')
+```
 
 3.file:domain.te
 chane line:
+```
 - neverallow { domain -init -system_server -dumpstate } debugfs:file no_rw_file_perms;
 -appdomain -shell userdebug_or_eng(`-su')  
 + neverallow { domain -init -system_server -dumpstate userdebug_or_eng(`-qti_debugfs_domain')} debugfs:file no_rw_file_perms;
 + appdomain -shell userdebug_or_eng(`-su -sudaemon -qti-testscripts')
+```
