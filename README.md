@@ -106,7 +106,7 @@ add-line:
 chane line:
 ```
 - neverallow { domain -init -system_server -dumpstate } debugfs:file no_rw_file_perms;
--appdomain -shell userdebug_or_eng(`-su')  
+- appdomain -shell userdebug_or_eng(`-su')  
 + neverallow { domain -init -system_server -dumpstate userdebug_or_eng(`-qti_debugfs_domain')} debugfs:file no_rw_file_perms;
 + appdomain -shell userdebug_or_eng(`-su -sudaemon -qti-testscripts')
 ```
