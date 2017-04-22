@@ -75,3 +75,31 @@ error:Could not set cache size limit.
 solution: $ sudo ~/AOSP/prebuilts/misc/linux-x86/ccache/ccache -M 50G
 Set cache size limit to 50.0 Gbytes
 
+4. FAILED: /bin/bash -c "(out/host/linux-x86/bin/checkpolicy -M -c 30 -o out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.tmp 
+out/target/product/d855/obj/ETC/sepolicy_intermediates/policy.conf ) && (out/host/linux-x86/bin/checkpolicy -M -c 30 -o out/target/product/d855/obj/ETC/sepolicy_intermediates//sepolicy.dontaudit out/target/product/d855/obj/ETC/sepolicy_intermediates/policy.conf.dontaudit ) && (out/host/linux-x86/bin/sepolicy-analyze out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.tmp permissive > out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.permissivedomains ) && (if [ \"userdebug\" = \"user\" -a -s out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.permissivedomains ]; then 		echo \"==========\" 1>&2; 		echo \"ERROR: permissive domains not allowed in user builds\" 1>&2; 		echo \"List of invalid domains:\" 1>&2; 		cat out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.permissivedomains 1>&2; 		exit 1; 		fi ) && (mv out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.tmp out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy )"
+device/qcom/sepolicy/common/audioserver.te:63:ERROR 'attribute qti_debugfs_domain is not declared' at token ';' on line 21364:
+typeattribute audioserver qti_debugfs_domain;
+#line 63
+checkpolicy:  error(s) encountered while parsing configuration
+out/host/linux-x86/bin/checkpolicy:  loading policy configuration from out/target/product/d855/obj/ETC/sepolicy_intermediates/policy.conf
+ninja: build stopped: subcommand failed.
+build/core/ninja.mk:148: recipe for target 'ninja_wrapper' failed
+make: *** [ninja_wrapper] Error 1
+
+Solution:
+Under system/sepolicy
+1. file:attributes
+add-line:
++ # Domain type used for debugfs access by QCOM
++ 113	attribute qti_debugfs_domain;
+2. create file: qti-testscripts.te
+add-line:
++ userdebug_or_eng('type qti-testscripts, domain, domain_deprecated, mlstrustedsubject;')
+
+3.file:domain.te
+chane line:
+- neverallow { domain -init -system_server -dumpstate } debugfs:file no_rw_file_perms;
+- appdomain -shell userdebug_or_eng(`-su') 
+to new line:
++ neverallow { domain -init -system_server -dumpstate userdebug_or_eng(`-qti_debugfs_domain')} debugfs:file no_rw_file_perms;
++ appdomain -shell userdebug_or_eng(`-su -sudaemon -qti-testscripts')
