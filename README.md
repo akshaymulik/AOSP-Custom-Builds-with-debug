@@ -110,3 +110,24 @@ chane line:
 + neverallow { domain -init -system_server -dumpstate userdebug_or_eng(`-qti_debugfs_domain')} debugfs:file no_rw_file_perms;
 + appdomain -shell userdebug_or_eng(`-su -qti-testscripts')
 ```
+4. hardware/libhardware/include/hardware -I system/security/softkeymaster/include/keymaster -I system/vold -I out/target/product/d855/obj/EXECUTABLES/vold_intermediates -I out/target/product/d855/gen/EXECUTABLES/vold_intermediates -I libnativehelper/include/nativehelper \$(cat out/target/product/d855/obj/EXECUTABLES/vold_intermediates/import_includes) -isystem system/core/include -isystem system/media/audio/include -isystem hardware/libhardware/include -isystem hardware/libhardware_legacy/include -isystem hardware/ril/include -isystem libnativehelper/include -isystem frameworks/native/opengl/include -isystem frameworks/av/include -isystem frameworks/base/include -isystem out/target/product/d855/obj/include -isystem bionic/libc/arch-arm/include -isystem bionic/libc/include -isystem bionic/libc/kernel/uapi -isystem bionic/libc/kernel/common -isystem bionic/libc/kernel/uapi/asm-arm -isystem bionic/libm/include -isystem bionic/libm/include/arm -c    -fno-exceptions -Wno-multichar -msoft-float -ffunction-sections -fdata-sections -funwind-tables -fstack-protector-strong -Wa,--noexecstack -Werror=format-security -D_FORTIFY_SOURCE=2 -fno-short-enums -no-canonical-prefixes -mcpu=cortex-a15 -D__ARM_FEATURE_LPAE=1 -mfloat-abi=softfp -mfpu=neon -DANDROID -fmessage-length=0 -W -Wall -Wno-unused -Winit-self -Wpointer-arith -Werror=return-type -Werror=non-virtual-dtor -Werror=address -Werror=sequence-point -Werror=date-time -DNDEBUG -g -Wstrict-aliasing=2 -DNDEBUG -UDEBUG  -D__compiler_offsetof=__builtin_offsetof -Werror=int-conversion -Wno-reserved-id-macro -Wno-format-pedantic -Wno-unused-command-line-argument -fcolor-diagnostics -nostdlibinc  -mcpu=krait -mfpu=neon-vfpv4 -target arm-linux-androideabi    -target arm-linux-androideabi -Bprebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/arm-linux-androideabi/bin    -std=gnu99     -mthumb -Os -fomit-frame-pointer -fno-strict-aliasing   -Werror -Wall -Wno-missing-field-initializers -Wno-unused-variable -Wno-unused-parameter -DCONFIG_HW_DISK_ENCRYPTION -fpie -D_USING_LIBCXX -std=c11  -Werror=int-to-pointer-cast -Werror=pointer-to-int-cast  -Werror=address-of-temporary -Werror=null-dereference -Werror=return-type  -MD -MF out/target/product/d855/obj/EXECUTABLES/vold_intermediates/cryptfs.d -o out/target/product/d855/obj/EXECUTABLES/vold_intermediates/cryptfs.o system/vold/cryptfs.c ) && (cp out/target/product/d855/obj/EXECUTABLES/vold_intermediates/cryptfs.d out/target/product/d855/obj/EXECUTABLES/vold_intermediates/cryptfs.P; sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\\\\$//' -e '/^\$/ d' -e 's/\$/ :/' < out/target/product/d855/obj/EXECUTABLES/vold_intermediates/cryptfs.d >> out/target/product/d855/obj/EXECUTABLES/vold_intermediates/cryptfs.P; rm -f out/target/product/d855/obj/EXECUTABLES/vold_intermediates/cryptfs.d )"
+system/vold/cryptfs.c:74:10: fatal error: 'cryptfs_hw.h' file not found
+#include "cryptfs_hw.h"
+         ^
+1 error generated.
+[  0% 8/12809] Ensure Jack server is installed and started
+Jack server already installed in "/home/akshay/.jack-server"
+Server is already running
+ninja: build stopped: subcommand failed.
+build/core/ninja.mk:148: recipe for target 'ninja_wrapper' failed
+make: *** [ninja_wrapper] Error 1
+
+#### make failed to build some targets (05:43 (mm:ss)) ####
+
+Solution:
+file: system/vold/Android.mk
+after line: ifeq ($(TARGET_HW_DISK_ENCRYPTION),true)
+add
+```
++TARGET_CRYPTFS_HW_PATH ?= device/qcom/common/cryptfs_hw
+```
