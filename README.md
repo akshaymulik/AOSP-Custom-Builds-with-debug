@@ -475,3 +475,14 @@ int should_use_keymaster()
     return 1;
 }
 ```
+Edit makefile: device/lge/g3-common/cryptfs_hw/Android.mk
+with new lines'+'
+```make
+commonSharedLibraries := \
+                        libcutils \
+                        libutils \
+                        libdl    \
++                       libhardware
++ commonIncludes := \
++                 hardware/libhardware/include/hardware/
+```
