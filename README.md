@@ -1,4 +1,4 @@
-# error for d855 with AOSP
+# Error while compiling AOSP for D855
 #vendor files https://github.com/akshaymulik/proprietary_vendor_lge 
 1. 
 ninja: Entering directory `.'
