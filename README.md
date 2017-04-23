@@ -435,7 +435,7 @@ int fs_mgr_mount_all(struct fstab *fstab, int mount_mode)
     }
 }
 ```
-in file: device/qcom/common/cryptfs_hw/cryptfs_hw.c
+in file: device/qcom/common/cryptfs_hw/cryptfs_hw.c and device/lge/g3-common/cryptfs_hw/cryptfs_hw.c
 add following function
 ```c
 unsigned int clear_hw_device_encryption_key()
