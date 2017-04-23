@@ -149,9 +149,29 @@ int update_hw_device_encryption_key(const char*, const char*, const char*);
 2 errors generated.
 
 Solution:
-file:device/qcom/common/cryptfs_hw/cryptfs_hw.h
-change line:
+in file: .repo/local_manifest/local_manifest.xml
+add lines:
+```xml
+<remove-project name="platform/system/vold"/>
+    <project path="system/vold" name="LineageOS/android_system_vold" remote="github" revision="cm-14.1" />
 ```
-- int update_hw_device_encryption_key(const char*, const char*, const char*);
-+ int update_hw_device_encryption_key(const char*, const char*);
+Then in terminal
+```
+$repo sync --force-sync system/vold
+```
+When you make you will again get this error:
+ninja: error: 'out/target/product/d855/obj/SHARED_LIBRARIES/libcrypto_utils_intermediates/export_includes', needed by 'out/target/product/d855/obj/EXECUTABLES/vold_intermediates/import_includes', missing and no known rule to make it
+build/core/ninja.mk:148: recipe for target 'ninja_wrapper' failed
+make: *** [ninja_wrapper] Error 1
+
+Solution:
+File: system/vold/Android.mk
+remove
+```
+- libcrypto_utils \
+```
+under: common_static_libraries := \
+add line:
+```
++ libmincrypt  \
 ```
