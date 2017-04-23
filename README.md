@@ -175,3 +175,21 @@ add line:
 ```
 + libmincrypt  \
 ```
+7.[  0% 46/12810] target thumb C: libvold <= system/vold/cryptfs.c
+FAILED: /bin/bash -c "(PWD=/proc/self/cwd prebuilts/misc/linux-x86/ccache/ccache prebuilts/clang/host/linux-x86/clang-2690385/bin/clang -I system/extras/ext4_utils -I system/extras/f2fs_utils -I external/scrypt/lib/crypto -I frameworks/native/include -I system/security/keystore -I hardware/libhardware/include/hardware -I system/security/softkeymaster/include/keymaster -I external/e2fsprogs/lib -I device/qcom/common/cryptfs_hw -I system/vold -I out/target/product/d855/obj/STATIC_LIBRARIES/libvold_intermediates -I out/target/product/d855/gen/STATIC_LIBRARIES/libvold_intermediates -I libnativehelper/include/nativehelper \$(cat out/target/product/d855/obj/STATIC_LIBRARIES/libvold_intermediates/import_includes) -isystem system/core/include -isystem system/media/audio/include -isystem hardware/libhardware/include -isystem hardware/libhardware_legacy/include -isystem hardware/ril/include -isystem libnativehelper/include -isystem frameworks/native/opengl/include -isystem frameworks/av/include -isystem frameworks/base/include -isystem out/target/product/d855/obj/include -isystem bionic/libc/arch-arm/include -isystem bionic/libc/include -isystem bionic/libc/kernel/uapi -isystem bionic/libc/kernel/common -isystem bionic/libc/kernel/uapi/asm-arm -isystem bionic/libm/include -isystem bionic/libm/include/arm -c    -fno-exceptions -Wno-multichar -msoft-float -ffunction-sections -fdata-sections -funwind-tables -fstack-protector-strong -Wa,--noexecstack -Werror=format-security -D_FORTIFY_SOURCE=2 -fno-short-enums -no-canonical-prefixes -mcpu=cortex-a15 -D__ARM_FEATURE_LPAE=1 -mfloat-abi=softfp -mfpu=neon -DANDROID -fmessage-length=0 -W -Wall -Wno-unused -Winit-self -Wpointer-arith -Werror=return-type -Werror=non-virtual-dtor -Werror=address -Werror=sequence-point -Werror=date-time -DNDEBUG -g -Wstrict-aliasing=2 -DNDEBUG -UDEBUG  -D__compiler_offsetof=__builtin_offsetof -Werror=int-conversion -Wno-reserved-id-macro -Wno-format-pedantic -Wno-unused-command-line-argument -fcolor-diagnostics -nostdlibinc  -mcpu=krait -mfpu=neon-vfpv4 -target arm-linux-androideabi    -target arm-linux-androideabi -Bprebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/arm-linux-androideabi/bin    -std=gnu99     -mthumb -Os -fomit-frame-pointer -fno-strict-aliasing   -Werror -Wall -Wno-missing-field-initializers -Wno-unused-variable -Wno-unused-parameter -DCONFIG_HW_DISK_ENCRYPTION -fPIC -D_USING_LIBCXX -std=c11  -Werror=int-to-pointer-cast -Werror=pointer-to-int-cast  -Werror=address-of-temporary -Werror=null-dereference -Werror=return-type  -MD -MF out/target/product/d855/obj/STATIC_LIBRARIES/libvold_intermediates/cryptfs.d -o out/target/product/d855/obj/STATIC_LIBRARIES/libvold_intermediates/cryptfs.o system/vold/cryptfs.c ) && (cp out/target/product/d855/obj/STATIC_LIBRARIES/libvold_intermediates/cryptfs.d out/target/product/d855/obj/STATIC_LIBRARIES/libvold_intermediates/cryptfs.P; sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\\\\$//' -e '/^\$/ d' -e 's/\$/ :/' < out/target/product/d855/obj/STATIC_LIBRARIES/libvold_intermediates/cryptfs.d >> out/target/product/d855/obj/STATIC_LIBRARIES/libvold_intermediates/cryptfs.P; rm -f out/target/product/d855/obj/STATIC_LIBRARIES/libvold_intermediates/cryptfs.d )"
+
+system/vold/cryptfs.c:2280:24: error: implicit declaration of function 'fs_mgr_is_mdtp_activated' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
+  int mdtp_activated = fs_mgr_is_mdtp_activated();
+                       ^
+1 error generated.
+
+Solution:
+file:system/core/fs_mgr/include/fs_mgr.h
+before 
+```cpp 
+#ifdef __cplusplus
+```
+add line: 
+```cpp
++  int fs_mgr_is_mdtp_activated(void);
+```
