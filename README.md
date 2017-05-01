@@ -696,3 +696,29 @@ Add line to file : frameworks/av/include/Camera/CameraParameters.h
 ```cpp
 + static const char KEY_LGE_CAMERA[];
 ```
+
+
+12. [  0% 42/9846] target SharedLib: camer...ntermediates/LINKED/camera.msm8974.so)
+FAILED: /bin/bash -c "prebuilts/misc/linux-x86/ccache/ccache prebuilts/clang/host/linux-x86/clang-2690385/bin/clang++ -nostdlib -Wl,-soname,camera.msm8974.so -Wl,--gc-sections -shared  -Lout/target/product/d855/obj/lib out/target/product/d855/obj/lib/crtbegin_so.o      out/target/product/d855/obj/SHARED_LIBRARIES/camera.msm8974_intermediates/CameraWrapper.o               -Wl,--whole-archive   -Wl,--no-whole-archive   out/target/product/d855/obj/STATIC_LIBRARIES/libunwind_llvm_intermediates/libunwind_llvm.a out/target/product/d855/obj/STATIC_LIBRARIES/libcompiler_rt-extras_intermediates/libcompiler_rt-extras.a   prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/../lib/gcc/arm-linux-androideabi/4.9/../../../../arm-linux-androideabi/lib/libatomic.a prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/bin/../lib/gcc/arm-linux-androideabi/4.9/libgcc.a -lhardware -llog -lcamera_client -lutils -lc++ -ldl -lc -lm  -o out/target/product/d855/obj/SHARED_LIBRARIES/camera.msm8974_intermediates/LINKED/camera.msm8974.so   -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now -Wl,--build-id=md5 -Wl,--warn-shared-textrel -Wl,--fatal-warnings -Wl,--icf=safe -Wl,--hash-style=gnu -Wl,--no-undefined-version -Wl,--no-fix-cortex-a8    -target arm-linux-androideabi -Bprebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/arm-linux-androideabi/bin   -Wl,--exclude-libs,libunwind_llvm.a -Wl,--no-undefined out/target/product/d855/obj/lib/crtend_so.o"
+device/lge/g3-common/camera/CameraWrapper.cpp:577: error: undefined reference to 'android::CameraParameters::KEY_LGE_CAMERA'
+device/lge/g3-common/camera/CameraWrapper.cpp:577: error: undefined reference to 'android::CameraParameters::KEY_ISO_MODE'
+device/lge/g3-common/camera/CameraWrapper.cpp:577: error: undefined reference to 'android::CameraParameters::KEY_ISO_MODE'
+device/lge/g3-common/camera/CameraWrapper.cpp:577: error: undefined reference to 'android::CameraParameters::KEY_LGE_ISO_MODE'
+device/lge/g3-common/camera/CameraWrapper.cpp:577: error: undefined reference to 'android::CameraParameters::KEY_LGE_ISO_MODE'
+device/lge/g3-common/camera/CameraWrapper.cpp:577: error: undefined reference to 'android::CameraParameters::KEY_LGE_ISO_MODE'
+device/lge/g3-common/camera/CameraWrapper.cpp:577: error: undefined reference to 'android::CameraParameters::KEY_LGE_ISO_MODE'
+device/lge/g3-common/camera/CameraWrapper.cpp:227: error: undefined reference to 'android::CameraParameters::KEY_SUPPORTED_ISO_MODES'
+device/lge/g3-common/camera/CameraWrapper.cpp:227: error: undefined reference to 'android::CameraParameters::KEY_ISO_MODE'
+device/lge/g3-common/camera/CameraWrapper.cpp:227: error: undefined reference to 'android::CameraParameters::KEY_ISO_MODE'
+clang++: error: linker command failed with exit code 1 (use -v to see invocation)
+
+
+Solution:
+In file: frameworks/av/camera/CameraParameters.cpp
+add line:
+```cpp
++ const char CameraParameters::KEY_SUPPORTED_ISO_MODES[] = "iso-values"; 
++ const char CameraParameters::KEY_LGE_ISO_MODE[] = "isoMode"; 
++ const char CameraParameters::KEY_ISO_MODE[] = "iso"; 
++ const char CameraParameters::KEY_LGE_CAMERA[] = "camera"; 
+```
