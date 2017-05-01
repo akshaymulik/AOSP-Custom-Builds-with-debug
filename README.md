@@ -694,5 +694,5 @@ make: *** [ninja_wrapper] Error 1
 Solution:
 Add line to file : frameworks/av/include/Camera/CameraParameters.h
 ```cpp
-+ static const char LGE_CAMERA[];
++ static const char KEY_LGE_CAMERA[];
 ```
