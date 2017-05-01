@@ -532,7 +532,6 @@ change lines:
 -        SLOGI("Keymaster version is not 1.0");
 -        return rc;
 -    }
-
-    return 1;
-}
+-    return 1;
+-}
 ```
