@@ -679,3 +679,20 @@ Add lines
 + static const char KEY_LGE_ISO_MODE[];
 + static const char KEY_ISO_MODE[];
 ```
+11. [  2% 278/10407] target thumb C++: camera.msm89...= device/lge/g3-common/camera/CameraWrapper.cpp
+FAILED: /bin/bash -c "(PWD=/proc/self/cwd prebuilts/misc/linux-x86/ccache/ccache prebuilts/clang/host/linux-x86/clang-2690385/bin/clang++ -I system/media/camera/include -I device/lge/g3-common/camera -I out/target/product/d855/obj/SHARED_LIBRARIES/camera.msm8974_intermediates -I out/target/product/d855/gen/SHARED_LIBRARIES/camera.msm8974_intermediates -I libnativehelper/include/nativehelper \$(cat out/target/product/d855/obj/SHARED_LIBRARIES/camera.msm8974_intermediates/import_includes) -isystem system/core/include -isystem system/media/audio/include -isystem hardware/libhardware/include -isystem hardware/libhardware_legacy/include -isystem hardware/ril/include -isystem libnativehelper/include -isystem frameworks/native/include -isystem frameworks/native/opengl/include -isystem frameworks/av/include -isystem frameworks/base/include -isystem out/target/product/d855/obj/include -isystem bionic/libc/arch-arm/include -isystem bionic/libc/include -isystem bionic/libc/kernel/uapi -isystem bionic/libc/kernel/common -isystem bionic/libc/kernel/uapi/asm-arm -isystem bionic/libm/include -isystem bionic/libm/include/arm -c    -fno-exceptions -Wno-multichar -msoft-float -ffunction-sections -fdata-sections -funwind-tables -fstack-protector-strong -Wa,--noexecstack -Werror=format-security -D_FORTIFY_SOURCE=2 -fno-short-enums -no-canonical-prefixes -mcpu=cortex-a15 -D__ARM_FEATURE_LPAE=1 -mfloat-abi=softfp -mfpu=neon -DANDROID -fmessage-length=0 -W -Wall -Wno-unused -Winit-self -Wpointer-arith -Werror=return-type -Werror=non-virtual-dtor -Werror=address -Werror=sequence-point -Werror=date-time -DNDEBUG -g -Wstrict-aliasing=2 -DNDEBUG -UDEBUG  -D__compiler_offsetof=__builtin_offsetof -Werror=int-conversion -Wno-reserved-id-macro -Wno-format-pedantic -Wno-unused-command-line-argument -fcolor-diagnostics -nostdlibinc  -mcpu=krait -mfpu=neon-vfpv4 -target arm-linux-androideabi    -target arm-linux-androideabi -Bprebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/arm-linux-androideabi/bin    -fvisibility-inlines-hidden -Wsign-promo  -Wno-inconsistent-missing-override -nostdlibinc  -target arm-linux-androideabi   -mthumb -Os -fomit-frame-pointer -fno-strict-aliasing  -fno-rtti -fPIC -D_USING_LIBCXX -std=gnu++14  -Werror=int-to-pointer-cast -Werror=pointer-to-int-cast  -Werror=address-of-temporary -Werror=null-dereference -Werror=return-type    -MD -MF out/target/product/d855/obj/SHARED_LIBRARIES/camera.msm8974_intermediates/CameraWrapper.d -o out/target/product/d855/obj/SHARED_LIBRARIES/camera.msm8974_intermediates/CameraWrapper.o device/lge/g3-common/camera/CameraWrapper.cpp ) && (cp out/target/product/d855/obj/SHARED_LIBRARIES/camera.msm8974_intermediates/CameraWrapper.d out/target/product/d855/obj/SHARED_LIBRARIES/camera.msm8974_intermediates/CameraWrapper.P; sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\\\\$//' -e '/^\$/ d' -e 's/\$/ :/' < out/target/product/d855/obj/SHARED_LIBRARIES/camera.msm8974_intermediates/CameraWrapper.d >> out/target/product/d855/obj/SHARED_LIBRARIES/camera.msm8974_intermediates/CameraWrapper.P; rm -f out/target/product/d855/obj/SHARED_LIBRARIES/camera.msm8974_intermediates/CameraWrapper.d )"
+
+device/lge/g3-common/camera/CameraWrapper.cpp:242:43: error: no member named 'KEY_LGE_CAMERA' in 'android::CameraParameters'
+    params.set(android::CameraParameters::KEY_LGE_CAMERA, (id == 0 && is4k(params)) ? "1" : "0");
+               ~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+1 error generated.
+[  2% 278/10407] Building with Jack: out/target...RARIES/services.core_intermediates/classes.jack
+ninja: build stopped: subcommand failed.
+build/core/ninja.mk:148: recipe for target 'ninja_wrapper' failed
+make: *** [ninja_wrapper] Error 1
+
+Solution:
+Add line to file : frameworks/av/include/Camera/CameraParameters.h
+```cpp
++ static const char LGE_CAMERA[];
+```
