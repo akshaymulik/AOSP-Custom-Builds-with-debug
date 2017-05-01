@@ -486,3 +486,53 @@ commonSharedLibraries := \
 + commonIncludes := \
 +                 hardware/libhardware/include/hardware/
 ```
+
+9. [  0% 53/10416] target thumb C: libcry.../lge/g3-common/cryptfs_hw/cryptfs_hw.c
+FAILED: /bin/bash -c "(PWD=/proc/self/cwd prebuilts/misc/linux-x86/ccache/ccache prebuilts/clang/host/linux-x86/clang-2690385/bin/clang -I hardware/libhardware/include/hardware/ -I device/lge/g3-common/cryptfs_hw -I out/target/product/d855/obj/SHARED_LIBRARIES/libcryptfs_hw_intermediates -I out/target/product/d855/gen/SHARED_LIBRARIES/libcryptfs_hw_intermediates -I libnativehelper/include/nativehelper \$(cat out/target/product/d855/obj/SHARED_LIBRARIES/libcryptfs_hw_intermediates/import_includes) -isystem system/core/include -isystem system/media/audio/include -isystem hardware/libhardware/include -isystem hardware/libhardware_legacy/include -isystem hardware/ril/include -isystem libnativehelper/include -isystem frameworks/native/include -isystem frameworks/native/opengl/include -isystem frameworks/av/include -isystem frameworks/base/include -isystem out/target/product/d855/obj/include -isystem bionic/libc/arch-arm/include -isystem bionic/libc/include -isystem bionic/libc/kernel/uapi -isystem bionic/libc/kernel/common -isystem bionic/libc/kernel/uapi/asm-arm -isystem bionic/libm/include -isystem bionic/libm/include/arm -c    -fno-exceptions -Wno-multichar -msoft-float -ffunction-sections -fdata-sections -funwind-tables -fstack-protector-strong -Wa,--noexecstack -Werror=format-security -D_FORTIFY_SOURCE=2 -fno-short-enums -no-canonical-prefixes -mcpu=cortex-a15 -D__ARM_FEATURE_LPAE=1 -mfloat-abi=softfp -mfpu=neon -DANDROID -fmessage-length=0 -W -Wall -Wno-unused -Winit-self -Wpointer-arith -Werror=return-type -Werror=non-virtual-dtor -Werror=address -Werror=sequence-point -Werror=date-time -DNDEBUG -g -Wstrict-aliasing=2 -DNDEBUG -UDEBUG  -D__compiler_offsetof=__builtin_offsetof -Werror=int-conversion -Wno-reserved-id-macro -Wno-format-pedantic -Wno-unused-command-line-argument -fcolor-diagnostics -nostdlibinc  -mcpu=krait -mfpu=neon-vfpv4 -target arm-linux-androideabi    -target arm-linux-androideabi -Bprebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/arm-linux-androideabi/bin    -std=gnu99     -mthumb -Os -fomit-frame-pointer -fno-strict-aliasing   -fPIC -D_USING_LIBCXX   -Werror=int-to-pointer-cast -Werror=pointer-to-int-cast  -Werror=address-of-temporary -Werror=null-dereference -Werror=return-type  -MD -MF out/target/product/d855/obj/SHARED_LIBRARIES/libcryptfs_hw_intermediates/cryptfs_hw.d -o out/target/product/d855/obj/SHARED_LIBRARIES/libcryptfs_hw_intermediates/cryptfs_hw.o device/lge/g3-common/cryptfs_hw/cryptfs_hw.c ) && (cp out/target/product/d855/obj/SHARED_LIBRARIES/libcryptfs_hw_intermediates/cryptfs_hw.d out/target/product/d855/obj/SHARED_LIBRARIES/libcryptfs_hw_intermediates/cryptfs_hw.P; sed -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\\\\$//' -e '/^\$/ d' -e 's/\$/ :/' < out/target/product/d855/obj/SHARED_LIBRARIES/libcryptfs_hw_intermediates/cryptfs_hw.d >> out/target/product/d855/obj/SHARED_LIBRARIES/libcryptfs_hw_intermediates/cryptfs_hw.P; rm -f out/target/product/d855/obj/SHARED_LIBRARIES/libcryptfs_hw_intermediates/cryptfs_hw.d )"
+device/lge/g3-common/cryptfs_hw/cryptfs_hw.c:226:5: error: conflicting types for 'update_hw_device_encryption_key'
+int update_hw_device_encryption_key(const char* oldpw, const char* newpw, const char* enc_mode)
+    ^
+device/lge/g3-common/cryptfs_hw/cryptfs_hw.h:37:5: note: previous declaration is here
+int update_hw_device_encryption_key(const char*, const char*);
+    ^
+device/lge/g3-common/cryptfs_hw/cryptfs_hw.c:350:5: error: redefinition of 'should_use_keymaster'
+int should_use_keymaster()
+    ^
+device/lge/g3-common/cryptfs_hw/cryptfs_hw.c:336:5: note: previous definition is here
+int should_use_keymaster()
+    ^
+device/lge/g3-common/cryptfs_hw/cryptfs_hw.c:362:16: error: use of undeclared identifier 'KEYMASTER_PARTITION_NAME'
+    if (access(KEYMASTER_PARTITION_NAME, F_OK) == -1) {
+               ^
+3 errors generated.
+ 
+
+Solution:
+in file device/lge/g3-common/cryptfs_hw/cryptfs_hw.h 
+change line:
+```cpp
+- int update_hw_device_encryption_key(const char*, const char*);
++ int update_hw_device_encryption_key(const char*, const char*, const char*);
++ int clear_hw_device_encryption_key();
++ unsigned int is_hw_fde_enabled(void);
++ int should_use_keymaster();
+```
+in file device/lge/g3-common/cryptfs_hw/cryptfs_hw.c
+change lines:
+```cpp
++ #define KEYMASTER_PARTITION_NAME "/dev/block/bootdevice/by-name/keymaster"
+- int should_use_keymaster()
+- {
+-    /* HW FDE key would be tied to keymaster only if:
+-     * New Keymaster is available
+-     * keymaster partition exists on the device
+-     */
+-    int rc = 0;
+-    if (get_keymaster_version() != KEYMASTER_MODULE_API_VERSION_1_0) {
+-        SLOGI("Keymaster version is not 1.0");
+-        return rc;
+-    }
+
+    return 1;
+}
+```
