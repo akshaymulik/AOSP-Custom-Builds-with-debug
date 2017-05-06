@@ -33,3 +33,4 @@ PRODUCT_COPY_FILES := \
     $(LOCAL_KERNEL):kernel
 #kernel-block-ends
 ```
+You can continue with make -j4 or make bootimage -j4
