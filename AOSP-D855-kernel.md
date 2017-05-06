@@ -19,3 +19,17 @@ make ARCH=arm CROSS_COMPILE=$CROSS_COMPILE lineageos_d855_defconfig
 make ARCH=arm CROSS_COMPILE=$CROSS_COMPILE -j4
 ```
 Output is present in arch/arm/boot
+Copy the image file that is your kernel with extension " zImage-dtb " file size 6.2 MB (approx)
+edit device/lge/d855/device.mk
+```mk
+#Kernel
+ifeq ($(TARGET_PREBUILT_KERNEL),)
+LOCAL_KERNEL := device/lge/d855-kernel/zImage-dtb
+else
+LOCAL_KERNEL := $(TARGET_PREBUILT_KERNEL)
+endif
+
+PRODUCT_COPY_FILES := \
+    $(LOCAL_KERNEL):kernel
+#kernel-block-ends
+```
