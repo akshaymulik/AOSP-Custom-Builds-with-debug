@@ -18,3 +18,4 @@ export CROSS_COMPILE=~/AOSP/prebuilts/gcc/linux-x86/arm/arm-eabi-4.8/bin/arm-eab
 make ARCH=arm CROSS_COMPILE=$CROSS_COMPILE lineageos_d855_defconfig
 make ARCH=arm CROSS_COMPILE=$CROSS_COMPILE -j4
 ```
+Output is present in arch/arm/boot
