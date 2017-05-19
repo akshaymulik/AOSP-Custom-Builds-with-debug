@@ -722,3 +722,19 @@ add line:
 + const char CameraParameters::KEY_ISO_MODE[] = "iso"; 
 + const char CameraParameters::KEY_LGE_CAMERA[] = "camera"; 
 ```
+
+13.
+Starting build with ninja
+ninja: Entering directory `.'
+ninja: error: 'out/host/linux-x86/bin/dtbToolCM', needed by 'out/target/product/d855/dt.img', missing and no known rule to make it
+build/core/ninja.mk:148: recipe for target 'ninja_wrapper' failed
+make: *** [ninja_wrapper] Error 1
+
+#### make failed to build some targets (56 seconds) ####
+
+Solution:
+
+Add this to mkbootimg.mk:
+```make
++ include device/qcom/common/dtbtool/Android.mk
+```
