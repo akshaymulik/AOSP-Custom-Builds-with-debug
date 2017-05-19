@@ -460,9 +460,9 @@ else
   INSTALLED_2NDBOOTLOADER_TARGET :=
 endif # TARGET_NO_BOOTLOADER
 ifneq ($(strip $(TARGET_NO_KERNEL)),true)
-  INSTALLED_KERNEL_TARGET := $(PRODUCT_OUT)/kernel
+  INSTALLED_KERNEL_TARGET := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ/arch/arm/boot/zImage
 else
-  INSTALLED_KERNEL_TARGET :=
+  INSTALLED_KERNEL_TARGET := $(PRODUCT_OUT)/kernel
 endif
 
 # -----------------------------------------------------------------
