@@ -16,7 +16,7 @@
     <project path="kernel/lge/g3" name="LineageOS/android_kernel_lge_g3" remote="github" revision="cm-14.1" />
     <project path="vendor/lge" name="TheMuppets/proprietary_vendor_lge" remote="github" revision="cm-14.1" />
     <project path="vendor/aosp" name="akshaymulik/platform_vendor_aosp" remote="github" revision="nougat"/>
-  
+    <project path="vendor/cm" name="LineageOS/android_vendor_cm" remote="github" revision="cm-14.1"/>
 
   <project path="packages/apps/Launcher3" name="LineageOS/android_packages_apps_Launcher3"  remote="github" revision="cm-14.1" />
   <project path="packages/apps/Settings" name="LineageOS/android_packages_apps_Settings" remote="github" revision="cm-14.1" />
