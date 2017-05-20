@@ -738,3 +738,58 @@ Add this to mkbootimg.mk:
 ```make
 + include device/qcom/common/dtbtool/Android.mk
 ```
+14.
+[  0% 1/253] build out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy
+FAILED: /bin/bash -c "(out/host/linux-x86/bin/checkpolicy -M -c 30 -o out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.tmp out/target/product/d855/obj/ETC/sepolicy_intermediates/policy.conf ) && (out/host/linux-x86/bin/checkpolicy -M -c 30 -o out/target/product/d855/obj/ETC/sepolicy_intermediates//sepolicy.dontaudit out/target/product/d855/obj/ETC/sepolicy_intermediates/policy.conf.dontaudit ) && (out/host/linux-x86/bin/sepolicy-analyze out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.tmp permissive > out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.permissivedomains ) && (if [ \"userdebug\" = \"user\" -a -s out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.permissivedomains ]; then 	echo \"==========\" 1>&2; 		echo \"ERROR: permissive domains not allowed in user builds\" 1>&2; 		echo \"List of invalid domains:\" 1>&2; 		cat out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.permissivedomains 1>&2; 		exit 1; 		fi ) && (mv out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.tmp out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy )"
+
+
+vendor/cm/sepolicy/qcom/dumpstate.te:9:ERROR 'unknown type themeservice_app_data_file' at token ';' on line 38094:
+allow dumpstate fuse:file { getattr open read ioctl lock };
+allow dumpstate themeservice_app_data_file:dir { open getattr read search ioctl lock };
+checkpolicy:  error(s) encountered while parsing configuration
+out/host/linux-x86/bin/checkpolicy:  loading policy configuration from out/target/product/d855/obj/ETC/sepolicy_intermediates/policy.conf
+ninja: build stopped: subcommand failed.
+build/core/ninja.mk:148: recipe for target 'ninja_wrapper' failed
+make: *** [ninja_wrapper] Error 1
+
+solution: in file:vendor/cm/sepolicy/qcom/dumpstate.te
+comment out:
+```te
+#allow dumpstate themeservice_app_data_file:dir r_dir_perms;
+#allow dumpstate themeservice_app_data_file:file r_file_perms;
+```
+
+[  2% 2/82] build out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy
+FAILED: /bin/bash -c "(out/host/linux-x86/bin/checkpolicy -M -c 30 -o out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.tmp out/target/product/d855/obj/ETC/sepolicy_intermediates/policy.conf ) && (out/host/linux-x86/bin/checkpolicy -M -c 30 -o out/target/product/d855/obj/ETC/sepolicy_intermediates//sepolicy.dontaudit out/target/product/d855/obj/ETC/sepolicy_intermediates/policy.conf.dontaudit ) && (out/host/linux-x86/bin/sepolicy-analyze out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.tmp permissive > out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.permissivedomains ) && (if [ \"userdebug\" = \"user\" -a -s out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.permissivedomains ]; then 	echo \"==========\" 1>&2; 		echo \"ERROR: permissive domains not allowed in user builds\" 1>&2; 		echo \"List of invalid domains:\" 1>&2; 		cat out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.permissivedomains 1>&2; 		exit 1; 		fi ) && (mv out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.tmp out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy )"
+vendor/cm/sepolicy/qcom/mpdecision.te:2:ERROR 'unknown type sysfs_devices_system_iosched' at token ';' on line 38103:
+allow mpdecision sysfs_devices_system_iosched:file { { getattr open read ioctl lock } { open append write lock } };
+#line 1 "vendor/cm/sepolicy/qcom/mpdecision.te"
+checkpolicy:  error(s) encountered while parsing configuration
+out/host/linux-x86/bin/checkpolicy:  loading policy configuration from out/target/product/d855/obj/ETC/sepolicy_intermediates/policy.conf
+ninja: build stopped: subcommand failed.
+build/core/ninja.mk:148: recipe for target 'ninja_wrapper' failed
+make: *** [ninja_wrapper] Error 1
+
+solution: in file vendor/cm/sepolicy/system.te
+add line:
+```te
+allow system_app sysfs_devices_system_iosched:file rw_file_perms;
+```
+and remove/comment out same from vendor/cm/sepolicy/qcom/mpdecision.te
+
+[  2% 2/82] build out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy
+FAILED: /bin/bash -c "(out/host/linux-x86/bin/checkpolicy -M -c 30 -o out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.tmp out/target/product/d855/obj/ETC/sepolicy_intermediates/policy.conf ) && (out/host/linux-x86/bin/checkpolicy -M -c 30 -o out/target/product/d855/obj/ETC/sepolicy_intermediates//sepolicy.dontaudit out/target/product/d855/obj/ETC/sepolicy_intermediates/policy.conf.dontaudit ) && (out/host/linux-x86/bin/sepolicy-analyze out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.tmp permissive > out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.permissivedomains ) && (if [ \"userdebug\" = \"user\" -a -s out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.permissivedomains ]; then 	echo \"==========\" 1>&2; 		echo \"ERROR: permissive domains not allowed in user builds\" 1>&2; 		echo \"List of invalid domains:\" 1>&2; 		cat out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.permissivedomains 1>&2; 		exit 1; 		fi ) && (mv out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy.tmp out/target/product/d855/obj/ETC/sepolicy_intermediates/sepolicy )"
+vendor/cm/sepolicy/qcom/perfd.te:2:ERROR 'unknown type sysfs_devices_system_iosched' at token ';' on line 38127:
+allow perfd sysfs_devices_system_iosched:file { { getattr open read ioctl lock } { open append write lock } };
+#line 1 "vendor/cm/sepolicy/qcom/perfd.te"
+checkpolicy:  error(s) encountered while parsing configuration
+out/host/linux-x86/bin/checkpolicy:  loading policy configuration from out/target/product/d855/obj/ETC/sepolicy_intermediates/policy.conf
+ninja: build stopped: subcommand failed.
+build/core/ninja.mk:148: recipe for target 'ninja_wrapper' failed
+make: *** [ninja_wrapper] Error 1
+
+solution: in file vendor/cm/sepolicy/qcom/perfd.te
+remove/comment out 
+```te
+allow perfd sysfs_devices_system_iosched:file rw_file_perms;
+```
